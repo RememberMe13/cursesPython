@@ -3,21 +3,10 @@ import curses  # This was installed by default on my system. On windows, install
 
 def drawMenu(stdscr):
 
-    # Initialise the curses object
-    stdscr = curses.initscr()
-
-    # Do not echo keys back to terminal
-    curses.noecho()
-
-    # Makes it so that curses does not wait for Enter key
-    curses.cbreak()
-
     # Turn off blinking cursor
     curses.curs_set(False)
 
-    # Enable color
-    if curses.has_colors():
-        curses.start_color()
+
     
     # Change colors
     curses.init_color(curses.COLOR_BLACK, 0, 0, 0)
@@ -38,12 +27,13 @@ def drawMenu(stdscr):
         stdscr.addstr(int(curses.LINES / 2), startingXPos, screenDetailText)
 
         # Using insstr instead of addstr means there is no line 'added?' after it.
-        stdscr.insstr((int(curses.LINES) - 1), 0, "Press any key to quit.")
+        stdscr.insstr((int(curses.LINES) - 1), 0, "Press any key to quit.", curses.color_pair(2))
 
         # Actually draws the text above
         stdscr.refresh()
 
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
         
         index = 0
         done = False
@@ -58,7 +48,7 @@ def drawMenu(stdscr):
             if index % 2 == 0:
                 stdscr.box()
             else:
-                stdscr.border('l', 'r', 't', 'b', 'c', 'c', 'c', 'c')
+                stdscr.border('l', 'r', 't', ' ', 'c', 'c', 'c', 'c')
             stdscr.refresh()
 
             index = 1 + index
@@ -71,9 +61,6 @@ def drawMenu(stdscr):
         errors = str(err)
 
     # Begin shutdown
-    curses.nocbreak()
-    curses.echo()
-    curses.curs_set(True)
 
     # Checking if errors or testing output
     if "" != errors:
