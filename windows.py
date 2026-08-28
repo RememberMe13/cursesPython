@@ -3,7 +3,7 @@ from curses.textpad import rectangle
 
 
 def setupWindows(window):
-    msg = curses.newwin(1, (curses.COLS - 4), (curses.LINES - 4), 2)
+    msg = curses.newwin(3, (curses.COLS - 4), (curses.LINES - 4), 2)
     side = curses.newwin((curses.LINES - 7), 17, 1, (curses.COLS - 19))
     art = curses.newwin((curses.LINES - 7), (curses.COLS - 24), 1, 2)
 
