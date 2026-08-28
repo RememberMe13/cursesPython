@@ -9,6 +9,8 @@ def main(stdscr):
     # Disables the cursor if False
     curses.curs_set(True)
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
+    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_GREEN)
 
     name = getName(stdscr)
 
@@ -19,11 +21,11 @@ def main(stdscr):
     side.refresh()
 
     art.addstr(0, 0, "I am printing stuf")
-    art.bkgd(' ', curses.color_pair(1))
+    art.bkgd(' ', curses.color_pair(2))
     art.refresh()
 
     msg.addstr(0, 0, "You enter the hallway...")
-    msg.bkgd(' ', curses.color_pair(1))    
+    msg.bkgd(' ', curses.color_pair(3))    
     msg.refresh()
     
     
