@@ -11,12 +11,21 @@ def mPrint(window, msg, y=0, x=0):
     window.addstr(y, x, msg)
     window.refresh()
 
+def aPrint(window, msg, y=0, x=0):
+    window.clear()
+    window.addstr(y, x, msg)
+    window.refresh()
+
+
 
 def main(stdscr):
     # Disables the cursor if False
     curses.curs_set(True)
-
+    
     # Set up colours
+    curses.init_color(curses.COLOR_BLACK, 0, 0, 0)
+    curses.init_color(curses.COLOR_WHITE, 1000, 1000, 1000)
+
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
@@ -40,14 +49,20 @@ def main(stdscr):
     
 
     # --------------- START GAME ------------- #
-    mPrint(
+    """mPrint(
         msg,
         "“I arrived at school on a chilly, windy morning.”\n"
         "“I hadn't slept too well last night, too much Math homework.”\n"
         "“As I stepped up the ramp leading into the school, I saw…”"
+    )"""
+    mPrint(
+        msg,
+        "I arrived at school on a chilly, windy morning.\n"
+        "I hadn't slept too well last night, too much Math homework.\n"
+        "As I stepped up the ramp leading into the school, I saw…"
     )
-
-
+ 
+    aPrint(art, monster)
 
 
 
@@ -67,5 +82,27 @@ def main(stdscr):
     stdscr.getch()
 
 
+
+
+
+
+
+
+monster = r'''        .-"""".
+       /       \
+   __ /   .-.  .\
+  /  `\  /   \/  \
+  |  _ \/   .==.==.
+  | (   \  /____\__\
+   \ \      (_()(_()
+    \ \            '---._
+     \                   \_
+  /\ |`       (__)________/
+ /  \|     /\___/
+|    \     \||VV
+|     \     \|"""",
+|      \     ______)
+\       \  /`
+jgs      \('''
 
 curses.wrapper(main)
