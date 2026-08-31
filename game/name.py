@@ -10,7 +10,7 @@ def getName(window):
     window.addstr((midY - 2), (midX - 11), "Please enter your name:")
 
     # number of lines, number of cols, startY startX
-    win1 = curses.newwin(1, 9, midY, (midX - 7))
+    win1 = curses.newwin(1, 15, midY, (midX - 7))
     box = Textbox(win1)
 
     # Draw a rectangle (border)
