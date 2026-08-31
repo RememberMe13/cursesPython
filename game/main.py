@@ -1,24 +1,31 @@
 #!/usr/bin/python
 import curses
-from curses.textpad import Textbox, rectangle
 
 from name import getName
+from player import Player
 from windows import setupWindows
 
 
-def mPrint(window, msg, y=0, x=0):
+def wdwPrint(window, msg, y=0, x=0):
     window.clear()
     window.addstr(y, x, msg)
     window.refresh()
-
-def aPrint(window, msg, y=0, x=0):
-    window.clear()
-    window.addstr(y, x, msg)
-    window.refresh()
-
 
 
 def main(stdscr):
+    minX = 93
+    minY = 25
+    if (curses.COLS < minX) or (curses.LINES < minY):
+        stdscr.clear()
+        stdscr.addstr(0, 0,
+                      f"Terminal size too small: "
+                      f"{curses.COLS}x{curses.LINES}.\nRequired: "
+                      f"{minX}x{minY}"
+        )
+        stdscr.refresh()
+        stdscr.getch()
+        return
+
     # Disables the cursor if False
     curses.curs_set(True)
     
@@ -31,11 +38,14 @@ def main(stdscr):
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
     
     name = getName(stdscr)
+    player = Player(name)
 
     # Get the 3 windows that setupWindows makes
     msg, side, art = setupWindows(stdscr)
 
     side.addstr(0, 0, "Player: " + name)
+    side.addstr(1, 0, "HP: " + str(player.getHP()))
+    side.addstr(2, 0, "Gold: " + str(player.getGold()))
     side.bkgd(' ', curses.color_pair(1))
     side.refresh()
 
@@ -55,14 +65,14 @@ def main(stdscr):
         "“I hadn't slept too well last night, too much Math homework.”\n"
         "“As I stepped up the ramp leading into the school, I saw…”"
     )"""
-    mPrint(
+    wdwPrint(
         msg,
         "I arrived at school on a chilly, windy morning.\n"
         "I hadn't slept too well last night, too much Math homework.\n"
         "As I stepped up the ramp leading into the school, I saw…"
     )
  
-    aPrint(art, monster)
+    wdwPrint(art, monster)
 
 
 
@@ -104,5 +114,8 @@ monster = r'''        .-"""".
 |      \     ______)
 \       \  /`
 jgs      \('''
+
+
+
 
 curses.wrapper(main)

@@ -25,7 +25,7 @@ def getName(window):
     
     window.addstr(midY, int(midX - len(text) / 2), text, curses.A_BLINK | curses.A_BOLD)
     window.refresh()
-    time.sleep(0.2) #TODO change time when finished
+    time.sleep(2) #TODO change time when finished
 
     window.clear()
     return text
