@@ -1,10 +1,15 @@
 #!/usr/bin/python
 import curses
-import time
 from curses.textpad import Textbox, rectangle
 
 from name import getName
 from windows import setupWindows
+
+
+def mPrint(window, msg, y=0, x=0):
+    window.clear()
+    window.addstr(y, x, msg)
+    window.refresh()
 
 
 def main(stdscr):
@@ -14,7 +19,7 @@ def main(stdscr):
     # Set up colours
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
-    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_GREEN)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
     
     name = getName(stdscr)
 
@@ -33,6 +38,31 @@ def main(stdscr):
     msg.bkgd(' ', curses.color_pair(3))    
     msg.refresh()
     
+
+    # --------------- START GAME ------------- #
+    mPrint(
+        msg,
+        "“I arrived at school on a chilly, windy morning.”\n"
+        "“I hadn't slept too well last night, too much Math homework.”\n"
+        "“As I stepped up the ramp leading into the school, I saw…”"
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # this just exits on keypress after everything else
     stdscr.getch()
 
