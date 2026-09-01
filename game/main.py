@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import curses
 
+from intro import showIntro, showScores
 from name import getName
 from player import Player
 from windows import setupWindows
@@ -15,6 +16,7 @@ def wdwPrint(window, msg, y=0, x=0):
 def main(stdscr):
     minX = 93
     minY = 25
+    version = 0.1
     if (curses.COLS < minX) or (curses.LINES < minY):
         stdscr.clear()
         stdscr.addstr(0, 0,
@@ -37,6 +39,19 @@ def main(stdscr):
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
     curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
     
+    while True:
+        choice = showIntro(stdscr, version)
+
+        if choice == "start":
+            stdscr.clear()
+            break
+        elif choice == "scores":
+            showScores(stdscr)
+        elif choice == "quit":
+            return
+
+
+
     name = getName(stdscr)
     player = Player(name)
 

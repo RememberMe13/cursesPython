@@ -10,3 +10,7 @@ class Player:
     
     def getGold(self):
         return self.__gold
+
+if __name__ == "__main__":
+    print("This file is not meant to be run by itself. Exiting.")
+    exit()

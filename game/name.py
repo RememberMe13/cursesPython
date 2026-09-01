@@ -30,3 +30,7 @@ def getName(window):
     window.clear()
     return text
 
+
+if __name__ == "__main__":
+    print("This file is not meant to be run by itself. Exiting.")
+    exit()
