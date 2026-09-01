@@ -4,6 +4,7 @@ import curses
 from intro import showIntro, showScores
 from name import getName
 from player import Player
+from scores import scores
 from windows import setupWindows
 
 
@@ -54,6 +55,7 @@ def main(stdscr):
 
     name = getName(stdscr)
     player = Player(name)
+    scores[name] = 29
 
     # Get the 3 windows that setupWindows makes
     msg, side, art = setupWindows(stdscr)

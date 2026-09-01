@@ -1,6 +1,8 @@
 import curses
 from curses.textpad import Textbox, rectangle
 
+from scores import scores
+
 
 def showIntro(window, version):
     window.clear()
@@ -36,6 +38,8 @@ def showIntro(window, version):
 def showScores(window):
     window.clear()
     window.addstr(0, 0, "scores\nPress any key to continue.")
+    for i, (name, score) in enumerate(scores.items(), start = 2):
+        window.addstr(i, 0, f"{name}:{score}")
     window.refresh()
     window.getch()
 
