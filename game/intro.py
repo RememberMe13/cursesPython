@@ -38,7 +38,6 @@ def showScores(window):
     window.addstr(0, 0, "scores\nPress any key to continue.")
     window.refresh()
     window.getch()
-    return
 
 
 if __name__ == "__main__":
