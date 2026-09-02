@@ -1,46 +1,97 @@
 import curses
-from curses.textpad import Textbox, rectangle
-
-from scores import scores
+from curses.textpad import rectangle
 
 
 def showIntro(window, version):
-    window.clear()
+    window.erase()
+    choice = "start"
+
+    #window.clear()
     midY = int(curses.LINES / 2)
     midX = int(curses.COLS / 2)
    
-    message = "enter start to start, scores for scores, quit for exit."
     title = "GAME NAME HERE"
 
 
-    window.addstr((midY - 5), (midX - int(len(title) / 2)), title, curses.A_BOLD)
-    window.addstr((midY - 2), (midX - int(len(message) / 2)), message)
+    window.addstr(5, (midX - int(len(title) / 2)), title, curses.A_BOLD)
     window.addstr(curses.LINES - 1, 0, str(version))
 
-    # number of lines, number of cols, startY startX
-    win1 = curses.newwin(1, 15, midY, (midX - 7))
-    box = Textbox(win1)
+    # Disable cursor block
+    curses.curs_set(False)
 
-    # Draw a rectangle (border)
-    rectangle(window, (midY - 1), (midX - 8), (midY + 1), (midX + 8))
+    st = curses.newwin(1, 2, 8, midX - 10)
+    sc = curses.newwin(1, 2, 11, midX - 10)
+    qu = curses.newwin(1, 2, 14, midX - 10)
+    
+    rectangle(window, 7, midX - 11, 9, midX - 8)
+    rectangle(window, 10, midX - 11, 12, midX - 8)
+    rectangle(window, 13, midX - 11, 15, midX - 8)
+    
+    window.addstr(8, midX - 5, "Start")
+    window.addstr(11, midX - 5, "Scores")
+    window.addstr(14, midX - 5, "Quit")
+
     window.refresh()
+    blocks = [st, sc, qu]
 
-    box.edit()
-    text = box.gather().strip()
+    def increment(choice):
+        if choice == "start":
+            return "scores"
+        elif choice == "scores":
+            return "quit"
+        elif choice == "quit":
+            return "start"
 
-    if text == "start":
+    def deincrement(choice):
+        if choice == "start":
+            return "quit"
+        elif choice == "scores":
+            return "start"
+        elif choice == "quit":
+            return "scores"
+
+
+    while True:
+        for i in blocks:
+            i.bkgd(' ', curses.color_pair(4))
+            i.refresh()
+        if choice == "start":
+            st.bkgd(' ', curses.color_pair(3))
+            st.refresh()
+        elif choice == "scores":
+            sc.bkgd(' ', curses.color_pair(3))
+            sc.refresh()
+        elif choice == "quit":
+            qu.bkgd(' ', curses.color_pair(3))
+            qu.refresh()
+        
+        key = window.getch()
+        if key == 10:
+            break
+        elif key == 258:
+            choice = increment(choice)
+        elif key == 259:
+            choice = deincrement(choice)
+
+    if choice == "start":
         return "start"
-    elif text == "scores":
+    elif choice == "scores":
         return "scores"
-    elif text == "quit":
+    elif choice == "quit":
         return "quit"
 
 def showScores(window):
+    count = 3
+
     window.clear()
     window.addstr(0, 0, "scores\nPress any key to continue.")
-    for i, (name, score) in enumerate(scores.items(), start = 2):
-        window.addstr(i, 0, f"{name}:{score}")
+
+    with open("scores.txt", "r") as f:
+        for line in f:
+            window.addstr(count, 0, line)
+            count += 1
     window.refresh()
+
     window.getch()
 
 

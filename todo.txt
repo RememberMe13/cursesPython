@@ -1,4 +1,1 @@
-- Ask about if the curley quotes are needed
-- Do i need input, if i am using a different method of collecting input?
 - finish the main menu interface
-- change the storage of the scores from dict to plaintext, also fix scores display
