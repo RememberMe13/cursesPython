@@ -10,28 +10,34 @@ def showIntro(window, version):
     midY = int(curses.LINES / 2)
     midX = int(curses.COLS / 2)
    
-    title = "GAME NAME HERE"
+    title = r"""   _________    __  _________   _   _____    __  _________    __  ____________  ______
+  / ____/   |  /  |/  / ____/  / | / /   |  /  |/  / ____/   / / / / ____/ __ \/ ____/
+ / / __/ /| | / /|_/ / __/    /  |/ / /| | / /|_/ / __/     / /_/ / __/ / /_/ / __/   
+/ /_/ / ___ |/ /  / / /___   / /|  / ___ |/ /  / / /___    / __  / /___/ _, _/ /___   
+\____/_/  |_/_/  /_/_____/  /_/ |_/_/  |_/_/  /_/_____/   /_/ /_/_____/_/ |_/_____/   """
 
-
-    window.addstr(5, (midX - int(len(title) / 2)), title, curses.A_BOLD)
     window.addstr(curses.LINES - 1, 0, str(version))
+    window.addstr(curses.LINES - 1, curses.COLS - 11, "By Henry M")
 
     # Disable cursor block
     curses.curs_set(False)
 
-    st = curses.newwin(1, 2, 8, midX - 10)
-    sc = curses.newwin(1, 2, 11, midX - 10)
-    qu = curses.newwin(1, 2, 14, midX - 10)
+    st = curses.newwin(1, 2, 13, midX - 10)
+    sc = curses.newwin(1, 2, 16, midX - 10)
+    qu = curses.newwin(1, 2, 19, midX - 10)
+    tWin = curses.newwin(5, 88, 3, midX - 42)
     
-    rectangle(window, 7, midX - 11, 9, midX - 8)
-    rectangle(window, 10, midX - 11, 12, midX - 8)
-    rectangle(window, 13, midX - 11, 15, midX - 8)
+    rectangle(window, 12, midX - 11, 14, midX - 8)
+    rectangle(window, 15, midX - 11, 17, midX - 8)
+    rectangle(window, 18, midX - 11, 20, midX - 8)
     
-    window.addstr(8, midX - 5, "Start")
-    window.addstr(11, midX - 5, "Scores")
-    window.addstr(14, midX - 5, "Quit")
+    window.addstr(13, midX - 5, "Start")
+    window.addstr(16, midX - 5, "Scores")
+    window.addstr(19, midX - 5, "Quit")
+    tWin.addstr(0, 0, title)
 
     window.refresh()
+    tWin.refresh()
     blocks = [st, sc, qu]
 
     def increment(choice):
