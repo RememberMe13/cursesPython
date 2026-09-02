@@ -1,17 +1,11 @@
 #!/usr/bin/python
 import curses
 
+from game import game
 from intro import showIntro, showScores
 from name import getName
 from player import Player
-from scores import scores
 from windows import setupWindows
-
-
-def wdwPrint(window, msg, y=0, x=0):
-    window.clear()
-    window.addstr(y, x, msg)
-    window.refresh()
 
 
 def main(stdscr):
@@ -55,60 +49,27 @@ def main(stdscr):
 
     name = getName(stdscr)
     player = Player(name)
-    scores[name] = 29
 
     # Get the 3 windows that setupWindows makes
     msg, side, art = setupWindows(stdscr)
 
-    side.addstr(0, 0, "Player: " + name)
-    side.addstr(1, 0, "HP: " + str(player.getHP()))
-    side.addstr(2, 0, "Gold: " + str(player.getGold()))
-    side.bkgd(' ', curses.color_pair(1))
-    side.refresh()
-
-    art.addstr(0, 0, "I am printing stuf")
-    art.bkgd(' ', curses.color_pair(2))
-    art.refresh()
-
-    msg.addstr(0, 0, "You enter the hallway...")
-    msg.bkgd(' ', curses.color_pair(3))    
-    msg.refresh()
-    
+    game(player, msg, side, art, stdscr)
 
     # --------------- START GAME ------------- #
-    """mPrint(
-        msg,
-        "“I arrived at school on a chilly, windy morning.”\n"
-        "“I hadn't slept too well last night, too much Math homework.”\n"
-        "“As I stepped up the ramp leading into the school, I saw…”"
-    )"""
-    wdwPrint(
-        msg,
-        "I arrived at school on a chilly, windy morning.\n"
-        "I hadn't slept too well last night, too much Math homework.\n"
-        "As I stepped up the ramp leading into the school, I saw…"
-    )
- 
-    wdwPrint(art, monster)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # this just exits on keypress after everything else
-    stdscr.getch()
-
-
+#    """mPrint(
+#        msg,
+#        "“I arrived at school on a chilly, windy morning.”\n"
+#        "“I hadn't slept too well last night, too much Math homework.”\n"
+#        "“As I stepped up the ramp leading into the school, I saw…”"
+#    )"""
+#    wdwPrint(
+#        msg,
+#        "I arrived at school on a chilly, windy morning.\n"
+#        "I hadn't slept too well last night, too much Math homework.\n"
+#        "As I stepped up the ramp leading into the school, I saw…"
+#    )
+# 
+#    wdwPrint(art, monster)
 
 
 
