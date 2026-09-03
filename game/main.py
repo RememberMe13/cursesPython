@@ -10,7 +10,7 @@ from windows import setupWindows
 
 def main(stdscr):
     minX = 93
-    minY = 25
+    minY = 26
     version = 0.1
     if (curses.COLS < minX) or (curses.LINES < minY):
         stdscr.clear()
@@ -56,45 +56,7 @@ def main(stdscr):
 
     game(player, msg, side, art, stdscr)
 
-    # --------------- START GAME ------------- #
-#    """mPrint(
-#        msg,
-#        "“I arrived at school on a chilly, windy morning.”\n"
-#        "“I hadn't slept too well last night, too much Math homework.”\n"
-#        "“As I stepped up the ramp leading into the school, I saw…”"
-#    )"""
-#    wdwPrint(
-#        msg,
-#        "I arrived at school on a chilly, windy morning.\n"
-#        "I hadn't slept too well last night, too much Math homework.\n"
-#        "As I stepped up the ramp leading into the school, I saw…"
-#    )
-# 
-#    wdwPrint(art, monster)
-
-
-
-
-
-
-monster = r'''        .-"""".
-       /       \
-   __ /   .-.  .\
-  /  `\  /   \/  \
-  |  _ \/   .==.==.
-  | (   \  /____\__\
-   \ \      (_()(_()
-    \ \            '---._
-     \                   \_
-  /\ |`       (__)________/
- /  \|     /\___/
-|    \     \||VV
-|     \     \|"""",
-|      \     ______)
-\       \  /`
-jgs      \('''
-
-
 
 
 curses.wrapper(main)
+print("Program finished succesfully")
