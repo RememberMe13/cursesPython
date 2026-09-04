@@ -100,10 +100,13 @@ def game(player, msg, side, art, stdscr):
     
     if choice1 == "tech":
         while True:
-            wdwPrint(msg, "As you walk into the technology classrooms you see a 32gb stick of ddr5 ram on a table. There is no one around.")
+            wdwPrint(msg, "As you walk into the technology classrooms you see a 32gb stick of ddr5 ram on a table.")
             sleep(ds)
-            wdwPrint(msg, "Do you take the ram? yes/no", "no", 1)
-            choice2 = getInput(1, 4, curses.LINES - 5, 28)
+            wdwPrint(msg, "There is no one around.", "no", 1)
+            sleep(ds)
+            wdwPrint(msg, "Do you take the ram? yes/no", "no", 2)
+            wdwPrint(msg, "->", "no", 3)
+            choice2 = getInput(1, 4, curses.LINES - 3, 5)
             if choice2 == "yes" or choice2 == "no":
                 wdwPrint(msg, f"you chose {choice2}")
                 break
@@ -124,9 +127,11 @@ def game(player, msg, side, art, stdscr):
 
     elif choice1 == "math":
         while True:
-            wdwPrint(msg, "As you reminece about your CASIO FX-1AU graphing calculator you spot one unatended on a table!")
-            wdwPrint(msg, "Do you take the $270 calculator? yes/no", "no", 1)
-            choice2 = getInput(1, 4, curses.LINES - 5, 34)
+            wdwPrint(msg, "As you reminece about your CASIO FX-1AU graphing calculator you spot one unatended\n on a table!")
+            sleep(ds)
+            wdwPrint(msg, "Do you take the $270 calculator? yes/no", "no", 2)
+            wdwPrint(msg, "->", "no", 3)
+            choice2 = getInput(1, 4, curses.LINES - 3, 5)
             if choice2 == "yes" or choice2 == "no":
                 wdwPrint(msg, f"you chose {choice2}")
                 break
@@ -158,6 +163,9 @@ def game(player, msg, side, art, stdscr):
         wdwPrint(msg, "choice:", "no", 3, 55)
         choice3 = getInput(1, 2, curses.LINES - 3, 65)
         try:
+            if choice3 == "":
+                wdwPrint(msg, "Please enter a number!")
+                continue
             choice3 = int(choice3)
         except ValueError:
             wdwPrint(msg, "Please enter a number!")
