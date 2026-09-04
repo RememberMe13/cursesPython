@@ -178,8 +178,79 @@ def game(player, msg, side, art, stdscr):
             wdwPrint(msg, "Please enter a number from 1 to 4!")
             sleep(ds)
 
+    match choice3:
+        case 1:
+            wdwPrint(msg, "You enjoy a fish sandwich.")
+            player.heal(20)
+        case 2:
+            wdwPrint(msg, "You slurp up the noodle")
+            player.heal(10)
+        case 3:
+            wdwPrint(msg, "Yummy potato wedges.")
+            player.heal(20)
+        case 4:
+            wdwPrint(msg, "sorse")
+    
 
-            
+    # -----------SCIENCE OR ENGLISH------------- 
+    while True:
+        wdwPrint(msg, "After consuming some nutrition you walk to the next place.")
+        sleep(ds)
+        wdwPrint(msg, "Science or English?", "no", 1)
+        sleep(ds)
+        wdwPrint(msg, "-> ", "no", 2)
+        choice4 = getInput(1, 8, curses.LINES - 4, 5) 
+
+        if choice4 == "science" or choice4 == "english":
+            wdwPrint(msg, f"You chose {choice4}")
+            break
+        else:
+            wdwPrint(msg, "Please enter science or english!")
+            sleep(ds)
+    
+    if choice4 == "science":
+        while True:
+            wdwPrint(msg, "something something science")
+            sleep(ds)
+            wdwPrint(msg, "text two", "no", 1)
+            sleep(ds)
+            wdwPrint(msg, "yes or no?", "no", 2)
+            wdwPrint(msg, "->", "no", 3)
+            choice5 = getInput(1, 4, curses.LINES - 3, 5)
+            if choice5 == "yes" or choice5 == "no":
+                wdwPrint(msg, f"you chose {choice5}")
+                break
+            else:
+                wdwPrint(msg, "Please enter yes or no!")
+                sleep(ds)
+
+        if choice5 == "yes":
+            wdwPrint(msg, "science option yes!")
+            fight("science", "face", player, msg, side, art)
+        elif choice5 == "no":
+            wdwPrint(msg, "science no")
+            fight("no science", "monster", player, msg, side, art)
+
+    elif choice4 == "english":
+        while True:
+            wdwPrint(msg, "somethign somethign english")
+            sleep(ds)
+            wdwPrint(msg, "do you read book?", "no", 1)
+            wdwPrint(msg, "->", "no", 2)
+            choice5 = getInput(1, 4, curses.LINES - 3, 5)
+            if choice5 == "yes" or choice5 == "no":
+                wdwPrint(msg, f"you chose {choice5}")
+                break
+            else:
+                wdwPrint(msg, "Please enter yes or no!")
+                sleep(ds)
+
+        if choice5 == "yes":
+            wdwPrint(msg, "read book gives knowledge (gold)")
+            fight("english yes", "face", player, msg, side, art)
+        elif choice5 == "no":
+            wdwPrint(msg, "no read book gain no knowledge!")
+            fight("english no", "monster", player, msg, side, art)
 
 
 
@@ -189,11 +260,9 @@ def game(player, msg, side, art, stdscr):
 
 
 
-
-
-
-
-
+    choices = [choice1, choice2, choice3, choice4, choice5]
+    for i, choice in enumerate(choices, start=1):
+        wdwPrint(msg, f"Choice{i}: {choice}", "no", i - 1)
 
     stdscr.getch()
 
