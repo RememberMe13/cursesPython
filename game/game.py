@@ -1,9 +1,10 @@
 import curses
+import random
 from curses.textpad import Textbox
 from time import sleep
 
 import artAscii
-from enemy import Enemy
+from enemy import *
 
 
 def wdwPrint(window, msg, refresh="yes", y=0, x=0):
@@ -38,11 +39,17 @@ def getInput(nLines, nCols, startY, startX):
     return text
 
 def fight(enemy, player, msg, side, art):
+    # Print art
     wdwPrint(art, getattr(artAscii, enemy.artName))
+
     wdwPrint(msg, f"You are fighting {enemy.name}")
-    player.hurt(10)
+    sleep(2)
+
+    while True:
+        wdwPrint(msg, random.choice(enemy.quotes))
+        sleep(2)
+        break
     calcAttrs(player, side)
-    sleep(1)
     wdwPrint(msg, f"{enemy.name} won")
     keyToCont(msg)
 
@@ -63,15 +70,15 @@ def game(player, msg, side, art, stdscr):
     choice5 = "" # yes / no
 
     #Enemys name, artName, hp, atk #TODO Finish enemys
-    ant = Enemy("Big Ant", "snake", 100, 20)
-    gabe = Enemy("Gabe Newell", "face", 100, 20)
-    wire = Enemy("Live Wire", "monster", 100, 20)
-    math = Enemy("Well known math teacher", "face", 100, 20)
-    protractor = Enemy("Angry Protractor", "monster", 100, 20)
-    science = Enemy("Science", "face", 100, 20)
-    noScience = Enemy("No Science", "monster", 100, 20)
-    english = Enemy("English", "face", 100, 20)
-    noEnglish = Enemy("No English", "monster", 100, 20)
+    ant = Enemy("Big Ant", "snake", antQuotes, 100, 20)
+    gabe = Enemy("Gabe Newell", "face", gabeQuotes, 100, 20)
+    wire = Enemy("Live Wire", "monster", wireQuotes, 100, 20)
+    math = Enemy("Well known math teacher", "face", mathQuotes, 100, 20)
+    protractor = Enemy("Angry Protractor", "monster", protractorQuotes, 100, 20)
+    science = Enemy("Science", "face", scienceQuotes, 100, 20)
+    noScience = Enemy("No Science", "monster", noScienceQuotes, 100, 20)
+    english = Enemy("English", "face", englishQuotes, 100, 20)
+    noEnglish = Enemy("No English", "monster", noEnglishQuotes, 100, 20)
 
     #Set backgrounds
     art.bkgd(' ', curses.color_pair(2))
