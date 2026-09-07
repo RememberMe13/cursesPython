@@ -3,6 +3,7 @@ from curses.textpad import Textbox
 from time import sleep
 
 import artAscii
+from enemy import Enemy
 
 
 def wdwPrint(window, msg, refresh="yes", y=0, x=0):
@@ -36,13 +37,13 @@ def getInput(nLines, nCols, startY, startX):
     text = box.gather().strip().lower()
     return text
 
-def fight(name, artName, player, msg, side, art):
-    wdwPrint(art, getattr(artAscii, artName))
-    wdwPrint(msg, f"You are fighting {name}")
+def fight(enemy, player, msg, side, art):
+    wdwPrint(art, getattr(artAscii, enemy.artName))
+    wdwPrint(msg, f"You are fighting {enemy.name}")
     player.hurt(10)
     calcAttrs(player, side)
     sleep(1)
-    wdwPrint(msg, f"{name} won")
+    wdwPrint(msg, f"{enemy.name} won")
     keyToCont(msg)
 
     art.erase()
@@ -60,6 +61,17 @@ def game(player, msg, side, art, stdscr):
     choice3 = 0  # 1-4
     choice4 = "" # science / english
     choice5 = "" # yes / no
+
+    #Enemys name, artName, hp, atk #TODO Finish enemys
+    ant = Enemy("Big Ant", "snake", 100, 20)
+    gabe = Enemy("Gabe Newell", "face", 100, 20)
+    wire = Enemy("Live Wire", "monster", 100, 20)
+    math = Enemy("Well known math teacher", "face", 100, 20)
+    protractor = Enemy("Angry Protractor", "monster", 100, 20)
+    science = Enemy("Science", "face", 100, 20)
+    noScience = Enemy("No Science", "monster", 100, 20)
+    english = Enemy("English", "face", 100, 20)
+    noEnglish = Enemy("No English", "monster", 100, 20)
 
     #Set backgrounds
     art.bkgd(' ', curses.color_pair(2))
@@ -84,7 +96,8 @@ def game(player, msg, side, art, stdscr):
 
 
     # -----------START FIRST FIGHT------------
-    fight("BIG ANT", "snake", player, msg, side, art)
+
+    fight(ant, player, msg, side, art)
     
     while True:
         wdwPrint(msg, "Where do you want to head to next? tech or math")
@@ -108,7 +121,6 @@ def game(player, msg, side, art, stdscr):
             wdwPrint(msg, "->", "no", 3)
             choice2 = getInput(1, 4, curses.LINES - 3, 5)
             if choice2 == "yes" or choice2 == "no":
-                wdwPrint(msg, f"you chose {choice2}")
                 break
             else:
                 wdwPrint(msg, "Please enter yes or no!")
@@ -117,13 +129,13 @@ def game(player, msg, side, art, stdscr):
         if choice2 == "yes":
             #TODO add money from ram
             wdwPrint(msg, "As you put the valuable sand into your pocket Gabe Newell jumps up and scares you!")
-            fight("Gabe Newell", "face", player, msg, side, art)
+            fight(gabe, player, msg, side, art)
             #Maybe gabe steals some of the money back after
         elif choice2 == "no":
             wdwPrint(msg, "As you walk away from the expensive sand you accidentally touch a live wire!")
             player.hurt(5)
             calcAttrs(player, side)
-            fight("Live Wire", "monster", player, msg, side, art)
+            fight(wire, player, msg, side, art)
 
     elif choice1 == "math":
         while True:
@@ -133,7 +145,6 @@ def game(player, msg, side, art, stdscr):
             wdwPrint(msg, "->", "no", 3)
             choice2 = getInput(1, 4, curses.LINES - 3, 5)
             if choice2 == "yes" or choice2 == "no":
-                wdwPrint(msg, f"you chose {choice2}")
                 break
             else:
                 wdwPrint(msg, "Please enter yes or no!")
@@ -142,12 +153,12 @@ def game(player, msg, side, art, stdscr):
         if choice2 == "yes":
             #TODO add money from calc
             wdwPrint(msg, "As you put the overpriced computer in your pocket an angry Math teacher approaches!")
-            fight("well known math teacher", "face", player, msg, side, art)
+            fight(math, player, msg, side, art)
         elif choice2 == "no":
             wdwPrint(msg, "As you walk away from the calc (short for calculator) you step on an upturned protractor!")
             player.hurt(5)
             calcAttrs(player, side)
-            fight("Angry protractor", "monster", player, msg, side, art)
+            fight(protractor, player, msg, side, art)
 
 
     while True:
@@ -172,7 +183,6 @@ def game(player, msg, side, art, stdscr):
             sleep(ds)
 
         if choice3 in [1, 2, 3, 4]:
-            wdwPrint(msg, f"Choice: {choice3}")
             break
         else:
             wdwPrint(msg, "Please enter a number from 1 to 4!")
@@ -182,15 +192,23 @@ def game(player, msg, side, art, stdscr):
         case 1:
             wdwPrint(msg, "You enjoy a fish sandwich.")
             player.heal(20)
+            calcAttrs(player, side)
         case 2:
             wdwPrint(msg, "You slurp up the noodle")
             player.heal(10)
+            calcAttrs(player, side)
         case 3:
             wdwPrint(msg, "Yummy potato wedges.")
             player.heal(20)
+            calcAttrs(player, side)
+
         case 4:
             wdwPrint(msg, "sorse")
-    
+            wdwPrint(msg, "Gained 300 gold!", "no", 1)
+            player.gainGold(300)
+            calcAttrs(player, side)
+   
+    keyToCont(msg)
 
     # -----------SCIENCE OR ENGLISH------------- 
     while True:
@@ -202,7 +220,6 @@ def game(player, msg, side, art, stdscr):
         choice4 = getInput(1, 8, curses.LINES - 4, 5) 
 
         if choice4 == "science" or choice4 == "english":
-            wdwPrint(msg, f"You chose {choice4}")
             break
         else:
             wdwPrint(msg, "Please enter science or english!")
@@ -218,7 +235,6 @@ def game(player, msg, side, art, stdscr):
             wdwPrint(msg, "->", "no", 3)
             choice5 = getInput(1, 4, curses.LINES - 3, 5)
             if choice5 == "yes" or choice5 == "no":
-                wdwPrint(msg, f"you chose {choice5}")
                 break
             else:
                 wdwPrint(msg, "Please enter yes or no!")
@@ -226,10 +242,10 @@ def game(player, msg, side, art, stdscr):
 
         if choice5 == "yes":
             wdwPrint(msg, "science option yes!")
-            fight("science", "face", player, msg, side, art)
+            fight(science, player, msg, side, art)
         elif choice5 == "no":
             wdwPrint(msg, "science no")
-            fight("no science", "monster", player, msg, side, art)
+            fight(noScience, player, msg, side, art)
 
     elif choice4 == "english":
         while True:
@@ -247,22 +263,18 @@ def game(player, msg, side, art, stdscr):
 
         if choice5 == "yes":
             wdwPrint(msg, "read book gives knowledge (gold)")
-            fight("english yes", "face", player, msg, side, art)
+            fight(english, player, msg, side, art)
         elif choice5 == "no":
             wdwPrint(msg, "no read book gain no knowledge!")
-            fight("english no", "monster", player, msg, side, art)
-
-
-
-
-
-
-
+            fight(noEnglish, player, msg, side, art)
 
 
     choices = [choice1, choice2, choice3, choice4, choice5]
-    for i, choice in enumerate(choices, start=1):
-        wdwPrint(msg, f"Choice{i}: {choice}", "no", i - 1)
+    #for i, choice in enumerate(choices, start=1):
+        #wdwPrint(msg, f"Choice{i}: {choice}", "no", i - 1)
+
+    with open("scores.txt", "a") as f:
+        f.write(f"{player.name}:{player.getGold() + player.getHP()}\n")
 
     stdscr.getch()
 

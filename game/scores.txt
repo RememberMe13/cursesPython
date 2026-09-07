@@ -1,3 +1,5 @@
 Henry:100
 joe:38
 reginald:44
+Henry:90
+Gold muncher:365
