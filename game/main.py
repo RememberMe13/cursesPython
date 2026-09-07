@@ -55,6 +55,7 @@ def main(stdscr):
     msg, side, art = setupWindows(stdscr)
 
     game(player, msg, side, art, stdscr)
+    showScores(stdscr)
 
 
 

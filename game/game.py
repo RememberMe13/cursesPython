@@ -237,7 +237,7 @@ def game(player, msg, side, art, stdscr):
             sleep(ds)
             wdwPrint(msg, "do you read book?", "no", 1)
             wdwPrint(msg, "->", "no", 2)
-            choice5 = getInput(1, 4, curses.LINES - 3, 5)
+            choice5 = getInput(1, 4, curses.LINES - 4, 5)
             if choice5 == "yes" or choice5 == "no":
                 wdwPrint(msg, f"you chose {choice5}")
                 break
