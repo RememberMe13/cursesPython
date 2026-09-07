@@ -87,15 +87,15 @@ def showIntro(window, version):
         return "quit"
 
 def showScores(window):
-    count = 3
+    y = 3
 
     window.clear()
     window.addstr(0, 0, "scores\nPress any key to continue.")
 
     with open("scores.txt", "r") as f:
         for line in f:
-            window.addstr(count, 0, line)
-            count += 1
+            window.addstr(y, 0, line)
+            y += 1
     window.refresh()
 
     window.getch()
