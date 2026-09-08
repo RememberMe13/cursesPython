@@ -43,14 +43,63 @@ def fight(enemy, player, msg, side, art):
     wdwPrint(art, getattr(artAscii, enemy.artName))
 
     wdwPrint(msg, f"You are fighting {enemy.name}")
-    sleep(2)
-
+    sleep(1)
+    
+    count = 0
+    golds = [] # will get 10 - the distance and add it here, and add the sum at the end
     while True:
         wdwPrint(msg, random.choice(enemy.quotes))
-        sleep(2)
-        break
+        rNum = random.randint(1, 10)
+        pNum = ""
+        eNum = random.randint(1, 10)
+        sleep(1)
+        
+        while True:
+            wdwPrint(msg, "Pick a whole number from 1 - 10: ")
+            wdwPrint(msg, "-> ", "no", 1)
+            pNum = getInput(1, 3, curses.LINES - 3, 5)
+            try:
+                pNum = int(pNum)
+            except (ValueError, TypeError):
+                wdwPrint(msg, "Please enter a number!")
+                sleep(2)
+                continue
+
+            if pNum < 1 or pNum > 10:
+                wdwPrint(msg, "Number outside 1-10!")
+                sleep(2)
+                continue
+            break
+        
+        # Define the distance you were away from the actual number
+        pDist = abs(rNum - pNum)
+        eDist = abs(rNum - eNum)
+
+        #wdwPrint(msg, f"Number: {rNum} Player: {pNum} enemy: {eNum} pDist: {pDist} eDist {eDist}")
+        #keyToCont(msg)
+
+        # Finds out if the enemy or player was closer to the random number
+        if pDist < eDist:
+            wdwPrint(msg, f"You were closer: {pDist} away vs {eDist} away")
+            keyToCont(msg)
+        elif pDist == eDist:
+            wdwPrint(msg, f"Tie: {pDist} away vs {eDist} away")
+            keyToCont(msg)
+        else:
+            wdwPrint(msg, f"Enemy was closer: {eDist} away vs {pDist} away")
+            keyToCont(msg)
+        
+        
+        golds.append(10 - pDist)
+        sleep(1)
+        
+        count += 1
+        if count == 4:
+            break
+    
+    player.gainGold(sum(golds))
+    wdwPrint(msg, f"Added {sum(golds)} gold!")
     calcAttrs(player, side)
-    wdwPrint(msg, f"{enemy.name} won")
     keyToCont(msg)
 
     art.erase()
@@ -70,15 +119,15 @@ def game(player, msg, side, art, stdscr):
     choice5 = "" # yes / no
 
     #Enemys name, artName, hp, atk #TODO Finish enemys
-    ant = Enemy("Big Ant", "snake", antQuotes, 100, 20)
-    gabe = Enemy("Gabe Newell", "face", gabeQuotes, 100, 20)
-    wire = Enemy("Live Wire", "monster", wireQuotes, 100, 20)
-    math = Enemy("Well known math teacher", "face", mathQuotes, 100, 20)
-    protractor = Enemy("Angry Protractor", "monster", protractorQuotes, 100, 20)
-    science = Enemy("Science", "face", scienceQuotes, 100, 20)
-    noScience = Enemy("No Science", "monster", noScienceQuotes, 100, 20)
-    english = Enemy("English", "face", englishQuotes, 100, 20)
-    noEnglish = Enemy("No English", "monster", noEnglishQuotes, 100, 20)
+    ant = Enemy("Big Ant", "snake", antQuotes, 50)
+    gabe = Enemy("Gabe Newell", "face", gabeQuotes, 50)
+    wire = Enemy("Live Wire", "monster", wireQuotes, 50)
+    math = Enemy("Well known math teacher", "face", mathQuotes, 50)
+    protractor = Enemy("Angry Protractor", "monster", protractorQuotes, 50)
+    science = Enemy("Science", "face", scienceQuotes, 50)
+    noScience = Enemy("No Science", "monster", noScienceQuotes, 50)
+    english = Enemy("English", "face", englishQuotes, 50)
+    noEnglish = Enemy("No English", "monster", noEnglishQuotes, 50)
 
     #Set backgrounds
     art.bkgd(' ', curses.color_pair(2))
@@ -276,9 +325,16 @@ def game(player, msg, side, art, stdscr):
             fight(noEnglish, player, msg, side, art)
 
 
-    choices = [choice1, choice2, choice3, choice4, choice5]
+    #choices = [choice1, choice2, choice3, choice4, choice5]
     #for i, choice in enumerate(choices, start=1):
         #wdwPrint(msg, f"Choice{i}: {choice}", "no", i - 1)
+
+    if choice1 == "tech" and choice4 == "science":
+        wdwPrint(msg, "good ending")
+    elif choice1 == "maths" and choice4 == "english":
+        wdwPrint(msg, "Bad ending")
+    else:
+        wdwPrint(msg, "neutral ending")
 
     with open("scores.txt", "a") as f:
         f.write(f"{player.name}:{player.getGold() + player.getHP()}\n")

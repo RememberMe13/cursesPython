@@ -1,10 +1,9 @@
 class Enemy:
-    def __init__(self, name, artName, quotes, hp, atk):
+    def __init__(self, name, artName, quotes, hp):
         self.name = name
         self.artName = artName
         self.quotes = quotes
         self.__hp = hp
-        self.__atk = atk
 
     def getHP(self):
         return self.__hp
@@ -20,12 +19,12 @@ if __name__ == "__main__":
     exit()
 
 # Quotes
-antQuotes = ["im gonna squish you!", "Better run!", "chud"]
-gabeQuotes = ["Prepare for your half-life to end!", "go buy a GabeCube", "youll be left for dead!"]
-wireQuotes = ["Im aLIVE and kicking!", "go call a sparky", "got any tape?"]
-mathQuotes = ["Whats 2+2?", "dont be discriminate", "drop and give me 20!"]
-protractorQuotes = ["quote 1", "quote 2", "quote 3"]
-scienceQuotes = ["science 1", "science 2", "science 3"]
-noScienceQuotes = ["science 1", "science 2", "science 3"]
-englishQuotes = ["english 1", "english 2", "english 3"]
-noEnglishQuotes = ["english 1", "english 2", "english 3"]
+antQuotes = ("im gonna squish you!", "Better run!", "chud")
+gabeQuotes = ("Prepare for your half-life to end!", "go buy a GabeCube", "youll be left for dead!")
+wireQuotes = ("Im aLIVE and kicking!", "go call a sparky", "got any tape?")
+mathQuotes = ("Whats 2+2?", "dont be discriminate", "drop and give me 20!")
+protractorQuotes = ("quote 1", "quote 2", "quote 3")
+scienceQuotes = ("science 1", "science 2", "science 3")
+noScienceQuotes = ("science 1", "science 2", "science 3")
+englishQuotes = ("english 1", "english 2", "english 3")
+noEnglishQuotes = ("english 1", "english 2", "english 3")
