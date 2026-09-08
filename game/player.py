@@ -1,7 +1,7 @@
 class Player:
     def __init__(self, name):
         self.name = name
-        self.__hp = 10
+        self.__hp = 100
         self.__gold = 0
 
     def getHP(self):

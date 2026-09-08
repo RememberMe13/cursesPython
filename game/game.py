@@ -61,7 +61,7 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
         rNum = random.randint(1, 10)
         pNum = ""
         eNum = random.randint(1, 10)
-        sleep(1)
+        sleep(1.5)
         
         # Loop to get the number
         while True:
@@ -135,15 +135,15 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
     choice5 = "" # yes / no
 
     #Enemys name, artName, hp, atk #TODO Finish enemys
-    ant = Enemy("Big Ant", "snake", antQuotes, 10)
-    gabe = Enemy("Gabe Newell", "face", gabeQuotes, 50)
-    wire = Enemy("Live Wire", "monster", wireQuotes, 50)
-    math = Enemy("Well known math teacher", "face", mathQuotes, 50)
-    protractor = Enemy("Angry Protractor", "monster", protractorQuotes, 50)
-    science = Enemy("Science", "face", scienceQuotes, 50)
-    noScience = Enemy("No Science", "monster", noScienceQuotes, 50)
-    english = Enemy("English", "face", englishQuotes, 50)
-    noEnglish = Enemy("No English", "monster", noEnglishQuotes, 50)
+    ant = Enemy("Big Ant", "ant", antQuotes, 10)
+    gabe = Enemy("Gabe Newell", "gabe", gabeQuotes, 50)
+    wire = Enemy("Live Wire", "wire", wireQuotes, 50)
+    math = Enemy("Well known math teacher", "math", mathQuotes, 50)
+    protractor = Enemy("Angry Protractor", "protractor", protractorQuotes, 50)
+    gold = Enemy("Giant Gold Monster", "gold", goldQuotes, 50)
+    puddle = Enemy("Puddle Monster", "puddle", puddleQuotes, 50)
+    book = Enemy("Dan Gookins Guide to Ncurses Programming", "book", bookQuotes, 50)
+    english = Enemy("Old English Teacher", "english", englishQuotes, 50)
 
     #Set backgrounds
     art.bkgd(' ', curses.color_pair(2))
@@ -202,6 +202,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         if choice2 == "yes":
             #TODO add money from ram
             wdwPrint(msg, "As you put the valuable sand into your pocket Gabe Newell jumps up and scares you!")
+            keyToCont(msg)
             if not fight(gabe, player, msg, side, art, enemyAttrs):
                 return False
             #Maybe gabe steals some of the money back after
@@ -209,6 +210,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             wdwPrint(msg, "As you walk away from the expensive sand you accidentally touch a live wire!")
             player.hurt(5)
             calcAttrs(player, side)
+            keyToCont(msg)
             if not fight(wire, player, msg, side, art, enemyAttrs):
                 return False
 
@@ -228,12 +230,14 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         if choice2 == "yes":
             #TODO add money from calc
             wdwPrint(msg, "As you put the overpriced computer in your pocket an angry Math teacher approaches!")
+            keyToCont(msg)
             if not fight(math, player, msg, side, art, enemyAttrs):
                 return False
         elif choice2 == "no":
             wdwPrint(msg, "As you walk away from the calc (short for calculator) you step on an upturned protractor!")
             player.hurt(5)
             calcAttrs(player, side)
+            keyToCont(msg)
             if not fight(protractor, player, msg, side, art, enemyAttrs):
                 return False
 
@@ -309,11 +313,11 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
     
     if choice4 == "science":
         while True:
-            wdwPrint(msg, "something something science")
+            wdwPrint(msg, "After walking into the science classroom you see a test tube full of a golden liquid.")
             sleep(ds)
-            wdwPrint(msg, "text two", "no", 1)
+            wdwPrint(msg, "It shimmers in the light", "no", 1)
             sleep(ds)
-            wdwPrint(msg, "yes or no?", "no", 2)
+            wdwPrint(msg, "Drink it? yes/no", "no", 2)
             wdwPrint(msg, "->", "no", 3)
             choice5 = getInput(1, 4, curses.LINES - 3, 5)
             if choice5 == "yes" or choice5 == "no":
@@ -323,21 +327,32 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
                 sleep(ds)
 
         if choice5 == "yes":
-            wdwPrint(msg, "science option yes!")
-            if not fight(science, player, msg, side, art, enemyAttrs):
+            wdwPrint(msg, "Walking back outside, you trip and land in a suspiciously shiny puddle!")
+            sleep(ds)
+            wdwPrint(msg, "The puddle opens up into a portal to a gold dimension!", "no", 1)
+            sleep(ds)
+            wdwPrint(msg, "When you exit the portal, a giant gold slime thing attacks!")
+            keyToCont(msg)
+            if not fight(gold, player, msg, side, art, enemyAttrs):
                 return False
+
         elif choice5 == "no":
-            wdwPrint(msg, "science no")
-            if not fight(noScience, player, msg, side, art, enemyAttrs):
+            wdwPrint(msg, "Walking back outside, you trip and land in a puddle of water.")
+            sleep(ds)
+            wdwPrint(msg, "This angers the puddle and it attacks!")
+            keyToCont(msg)
+            if not fight(puddle, player, msg, side, art, enemyAttrs):
                 return False
 
     elif choice4 == "english":
         while True:
-            wdwPrint(msg, "somethign somethign english")
+            wdwPrint(msg, "As you enter the english classroom, you spy a musty old book resting on a table.")
             sleep(ds)
-            wdwPrint(msg, "do you read book?", "no", 1)
-            wdwPrint(msg, "->", "no", 2)
-            choice5 = getInput(1, 4, curses.LINES - 4, 5)
+            wdwPrint(msg, "On the title it says \"Dan Gookins Guide to Ncurses Programming\"", "no", 1)
+            sleep(ds)
+            wdwPrint(msg, "Read it? yes/no", "no", 2)
+            wdwPrint(mgs, "->", "no", 3)
+            choice5 = getInput(1, 4, curses.LINES - 3, 5)
             if choice5 == "yes" or choice5 == "no":
                 wdwPrint(msg, f"you chose {choice5}")
                 break
@@ -346,18 +361,18 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
                 sleep(ds)
 
         if choice5 == "yes":
-            wdwPrint(msg, "read book gives knowledge (gold)")
-            if not fight(english, player, msg, side, art, enemyAttrs):
+            wdwPrint(msg, "The book comes alive! It shouts \"stcscr.clear()\" at you!")
+            keyToCont(msg)
+            if not fight(book, player, msg, side, art, enemyAttrs):
                 return False
         elif choice5 == "no":
-            wdwPrint(msg, "no read book gain no knowledge!")
-            if not fight(noEnglish, player, msg, side, art, enemyAttrs):
+            wdwPrint(msg, "An old english teacher bursts out of the side door!")
+            sleep(ds)
+            wdwPrint(msg, "WHY DID YOU NOT ENRICH YOUR MIND!?", "no", 1)
+            keyToCont(msg)
+            if not fight(english, player, msg, side, art, enemyAttrs):
                 return False
 
-
-    #choices = [choice1, choice2, choice3, choice4, choice5]
-    #for i, choice in enumerate(choices, start=1):
-        #wdwPrint(msg, f"Choice{i}: {choice}", "no", i - 1)
 
     if choice1 == "tech" and choice4 == "science":
         wdwPrint(msg, "good ending")
