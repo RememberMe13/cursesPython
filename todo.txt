@@ -1,0 +1,3 @@
+- finish ui for death, win, and scores screens
+- finish the characters
+- finish quotes and art

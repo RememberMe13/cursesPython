@@ -2,7 +2,7 @@
 import curses
 
 from game import game
-from intro import showIntro, showScores
+from intro import *
 from name import getName
 from player import Player
 from windows import setupWindows
@@ -13,7 +13,7 @@ def main(stdscr):
     minY = 26
     version = 0.1
     if (curses.COLS < minX) or (curses.LINES < minY):
-        stdscr.clear()
+        stdscr.erase()
         stdscr.addstr(0, 0,
                       f"Terminal size too small: "
                       f"{curses.COLS}x{curses.LINES}.\nRequired: "
@@ -39,7 +39,7 @@ def main(stdscr):
         choice = showIntro(stdscr, version)
 
         if choice == "start":
-            stdscr.clear()
+            stdscr.erase()
             break
         elif choice == "scores":
             showScores(stdscr)
@@ -51,10 +51,12 @@ def main(stdscr):
     name = getName(stdscr)
     player = Player(name)
 
-    # Get the 3 windows that setupWindows makes
-    msg, side, art = setupWindows(stdscr)
+    # Get the 4 windows that setupWindows makes
+    msg, side, art, enemyAttrs = setupWindows(stdscr)
 
-    game(player, msg, side, art, stdscr)
+    if not game(player, msg, side, art, enemyAttrs, stdscr):
+        showDeath(stdscr)
+
     showScores(stdscr)
 
 

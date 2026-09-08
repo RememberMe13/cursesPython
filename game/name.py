@@ -21,12 +21,12 @@ def getName(window):
     text = box.gather().replace("\n", "").strip().capitalize()
 
     curses.curs_set(False)
-    window.clear()
+    window.erase()
     
     window.addstr(midY, int(midX - len(text) / 2), text, curses.A_BLINK | curses.A_BOLD)
     window.refresh()
     time.sleep(2) 
-    window.clear()
+    window.erase()
     return text
 
 

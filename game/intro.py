@@ -89,7 +89,7 @@ def showIntro(window, version):
 def showScores(window):
     y = 3
 
-    window.clear()
+    window.erase()
     window.addstr(0, 0, "scores\nPress any key to continue.")
 
     with open("scores.txt", "r") as f:
@@ -98,6 +98,13 @@ def showScores(window):
             y += 1
     window.refresh()
 
+    window.getch()
+
+def showDeath(window):
+    window.erase()
+    window.addstr(0, 0, "You have died")
+    window.refresh()
+    
     window.getch()
 
 

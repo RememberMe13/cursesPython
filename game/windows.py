@@ -5,10 +5,11 @@ from curses.textpad import rectangle
 def setupWindows(window):
     
     
-    # nlines, ncols, startX, startY
+    # nlines, ncols, startY, startX
     msg = curses.newwin(5, (curses.COLS - 4), (curses.LINES - 6), 2)
     side = curses.newwin((curses.LINES - 9), 23, 1, (curses.COLS - 25))
     art = curses.newwin((curses.LINES - 9), (curses.COLS - 30), 1, 2)
+    enemyAttrs = curses.newwin(1, (curses.COLS - 30), (curses.LINES - 11), 2)
 
     # format: tl y/x,  br y/x
     # messages
@@ -19,9 +20,8 @@ def setupWindows(window):
     rectangle(window, 0, 1, (curses.LINES - 8), (curses.COLS - 28))
     
     window.refresh()
-
     
-    return msg, side, art
+    return msg, side, art, enemyAttrs
 
 
 if __name__ == "__main__":
