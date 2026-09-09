@@ -1,4 +1,5 @@
 import curses
+import hashlib
 from curses.textpad import rectangle
 
 
@@ -88,14 +89,23 @@ def showIntro(window, version):
 
 def showScores(window):
     y = 3
-
     window.erase()
     window.addstr(0, 0, "scores\nPress any key to continue.")
 
     with open("scores.txt", "r") as f:
         for line in f:
-            window.addstr(y, 0, line)
-            y += 1
+            name, score, h = line.strip("\n").split(":")
+            # Hashing mechanism
+            hashed = hashlib.sha512(name.encode("utf-8") + score.encode("utf-8")).hexdigest()[:10]
+            if h != hashed:
+                window.addstr(y, 0, "Error: below line has an incorrect hash!\nPlease remove the infringing line!" + h + " : " + hashed)
+                window.addstr(y + 3, 0, name + ":" + score + ":" + h)
+                y += 1
+                break
+            else:
+                window.addstr(y, 0, name + ":" + score)
+                y += 1
+
     window.refresh()
 
     window.getch()

@@ -1,5 +1,6 @@
 import curses
 import random
+import hashlib
 from curses.textpad import Textbox
 from time import sleep
 
@@ -47,8 +48,10 @@ def getInput(nLines, nCols, startY, startX):
     return text
 
 def fight(enemy, player, msg, side, art, enemyAttrs):
+    aY, aX = art.getmaxyx()
+    asciHeight = getattr(artAscii, enemy.artName).count("\n") + 1
     # Print art
-    wdwPrint(art, getattr(artAscii, enemy.artName))
+    wdwPrint(art, getattr(artAscii, enemy.artName), "yes", int((aY / 2) - int(asciHeight / 2)), 0)
     calcEnemy(enemy, enemyAttrs)
 
     wdwPrint(msg, f"You are fighting {enemy.name}")
@@ -89,7 +92,7 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
         # Finds out if the enemy or player was closer to the random number
         if pDist < eDist:
             wdwPrint(msg, f"You were closer: {pDist} away vs {eDist} away")
-            enemy.hurt(eDist * 3)
+            enemy.hurt(eDist * 10)
             calcEnemy(enemy, enemyAttrs)
             golds.append(10 - pDist)
             keyToCont(msg)
@@ -386,7 +389,11 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         wdwPrint(msg, "neutral ending")
 
     with open("scores.txt", "a") as f:
-        f.write(f"{player.name}:{player.getGold() + player.getHP()}\n")
+        n = player.name
+        s = str(player.getGold() + player.getHP())
+        # create hash
+        h = hashlib.sha512(n.encode("utf-8") + s.encode("utf-8")).hexdigest()[:10]
+        f.write(f"{n}:{s}:{h}\n")
 
     stdscr.getch()
 
