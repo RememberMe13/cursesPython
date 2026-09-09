@@ -89,8 +89,10 @@ def showIntro(window, version):
 
 def showScores(window):
     y = 3
+    err = 0
     window.erase()
     window.addstr(0, 0, "scores\nPress any key to continue.")
+    unsort = []
 
     with open("scores.txt", "r") as f:
         for line in f:
@@ -98,14 +100,19 @@ def showScores(window):
             # Hashing mechanism
             hashed = hashlib.sha512(name.encode("utf-8") + score.encode("utf-8")).hexdigest()[:10]
             if h != hashed:
-                window.addstr(y, 0, "Error: below line has an incorrect hash!\nPlease remove the infringing line!" + h + " : " + hashed)
-                window.addstr(y + 3, 0, name + ":" + score + ":" + h)
-                y += 1
+                window.addstr(2, 0, "Error: below line has an incorrect hash!\nPlease remove the infringing line!")
+                window.addstr(4, 0, name + ":" + score + ":" + h)
+                err = 1
                 break
             else:
-                window.addstr(y, 0, name + ":" + score)
-                y += 1
+                unsort.append(f"{name}:{score}")
 
+    if err == 0:
+        sort = sorted(unsort, key=lambda x: int(x.split(":")[-1]), reverse=True)
+        for item in sort:
+            window.addstr(y, 0, item)
+            y += 1
+                
     window.refresh()
 
     window.getch()

@@ -1,5 +1,4 @@
 - finish ui for death, win, and scores screens
-- add a hashing mechanism for security when printing out the scores, maybe delete the line if bad?
 - add a try catch for if there is no scores.txt file
 - add endings
 
