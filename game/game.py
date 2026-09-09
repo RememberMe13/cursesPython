@@ -39,6 +39,7 @@ def calcEnemy(enemy, window):
 
 def getInput(nLines, nCols, startY, startX):
     win1 = curses.newwin(nLines, nCols, startY, startX)
+    win1.bkgd(' ', curses.color_pair(3))
     box = Textbox(win1)
 
     box.edit()
@@ -66,8 +67,8 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
         # Loop to get the number
         while True:
             wdwPrint(msg, "Pick a whole number from 1 - 10: ")
-            wdwPrint(msg, "-> ", "no", 1)
-            pNum = getInput(1, 3, curses.LINES - 3, 5)
+            wdwPrint(msg, "-> ", "no", 2)
+            pNum = getInput(1, 3, curses.LINES - 4, 5)
             try:
                 pNum = int(pNum)
             except (ValueError, TypeError):
@@ -88,7 +89,7 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
         # Finds out if the enemy or player was closer to the random number
         if pDist < eDist:
             wdwPrint(msg, f"You were closer: {pDist} away vs {eDist} away")
-            enemy.hurt(eDist)
+            enemy.hurt(eDist * 3)
             calcEnemy(enemy, enemyAttrs)
             golds.append(10 - pDist)
             keyToCont(msg)
@@ -134,21 +135,22 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
     choice4 = "" # science / english
     choice5 = "" # yes / no
 
-    #Enemys name, artName, hp, atk #TODO Finish enemys
-    ant = Enemy("Big Ant", "ant", antQuotes, 10)
-    gabe = Enemy("Gabe Newell", "gabe", gabeQuotes, 50)
-    wire = Enemy("Live Wire", "wire", wireQuotes, 50)
-    math = Enemy("Well known math teacher", "math", mathQuotes, 50)
-    protractor = Enemy("Angry Protractor", "protractor", protractorQuotes, 50)
-    gold = Enemy("Giant Gold Monster", "gold", goldQuotes, 50)
-    puddle = Enemy("Puddle Monster", "puddle", puddleQuotes, 50)
-    book = Enemy("Dan Gookins Guide to Ncurses Programming", "book", bookQuotes, 50)
-    english = Enemy("Old English Teacher", "english", englishQuotes, 50)
+    #Enemys name, name of art, name of quotes, hp
+    ant = Enemy("Big Ant", "ant", antQuotes, 20)
+    gabe = Enemy("Gabe Newell", "gabe", gabeQuotes, 20)
+    wire = Enemy("Live Wire", "wire", wireQuotes, 20)
+    math = Enemy("Well known math teacher", "math", mathQuotes, 20)
+    protractor = Enemy("Angry Protractor", "protractor", protractorQuotes, 20)
+    gold = Enemy("Giant Gold Monster", "gold", goldQuotes, 20)
+    puddle = Enemy("Puddle Monster", "puddle", puddleQuotes, 20)
+    book = Enemy("Dan Gookins Guide to Ncurses Programming", "book", bookQuotes, 20)
+    english = Enemy("Old English Teacher", "english", englishQuotes, 20)
 
     #Set backgrounds
     art.bkgd(' ', curses.color_pair(2))
     msg.bkgd(' ', curses.color_pair(3))
     side.bkgd(' ', curses.color_pair(1))
+    enemyAttrs.bkgd(' ', curses.color_pair(2))
     art.refresh()
     #set up side panel
     calcAttrs(player, side)
@@ -257,12 +259,13 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         try:
             if choice3 == "":
                 wdwPrint(msg, "Please enter a number!")
+                sleep(ds)
                 continue
             choice3 = int(choice3)
         except ValueError:
             wdwPrint(msg, "Please enter a number!")
-            continue
             sleep(ds)
+            continue
 
         if choice3 in [1, 2, 3, 4]:
             break
@@ -290,6 +293,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         case 4:
             wdwPrint(msg, "sorse")
             player.spendGold(5)
+            sleep(ds)
             wdwPrint(msg, "Gained 300 gold!", "no", 1)
             player.gainGold(300)
             calcAttrs(player, side)
@@ -331,7 +335,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             sleep(ds)
             wdwPrint(msg, "The puddle opens up into a portal to a gold dimension!", "no", 1)
             sleep(ds)
-            wdwPrint(msg, "When you exit the portal, a giant gold slime thing attacks!")
+            wdwPrint(msg, "When you exit the portal, a giant gold slime thing attacks!", "no", 2)
             keyToCont(msg)
             if not fight(gold, player, msg, side, art, enemyAttrs):
                 return False
@@ -339,7 +343,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         elif choice5 == "no":
             wdwPrint(msg, "Walking back outside, you trip and land in a puddle of water.")
             sleep(ds)
-            wdwPrint(msg, "This angers the puddle and it attacks!")
+            wdwPrint(msg, "This angers the puddle and it attacks!", "no", 1)
             keyToCont(msg)
             if not fight(puddle, player, msg, side, art, enemyAttrs):
                 return False
@@ -351,7 +355,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             wdwPrint(msg, "On the title it says \"Dan Gookins Guide to Ncurses Programming\"", "no", 1)
             sleep(ds)
             wdwPrint(msg, "Read it? yes/no", "no", 2)
-            wdwPrint(mgs, "->", "no", 3)
+            wdwPrint(msg, "->", "no", 3)
             choice5 = getInput(1, 4, curses.LINES - 3, 5)
             if choice5 == "yes" or choice5 == "no":
                 wdwPrint(msg, f"you chose {choice5}")
@@ -385,6 +389,8 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         f.write(f"{player.name}:{player.getGold() + player.getHP()}\n")
 
     stdscr.getch()
+
+    return True
 
 if __name__ == "__main__":
     print("This file is not meant to be run by itself. Exiting.")

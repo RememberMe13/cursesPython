@@ -59,13 +59,13 @@ wire = r'''        -\            /    |
           /    XXXX     |            
          /    XX  XX    |            
         /     X    X    /            
-        /     X    X   /             
-       /              /              
-      /               /              
-     /               /               
-    /                /               
-   /                /                
-  /                /'''
+        /     X    X   /'''
+#       /              /              
+#      /               /              
+#     /               /               
+#    /                /               
+#   /                /                
+#  /                /'''
 
 math = r'''               ,
             ,:' `..;
@@ -83,20 +83,20 @@ math = r'''               ,
           / \________,'|
          (((/  |       |
          //    |       |
-        //     |\      |
-       //      | \     |
-      //       |  \    |
-     //        |   \   |
-    //         |    \  |
-   //          |    |\ |
-  //           |    | \|
- //            \    \
-c'             |\    \
-               | \    \
-               |  \    \
-               |.' \    \
-              _\    \.-' \ MJP
-             (___.-(__.'\/'''
+        //     |\      |'''
+#       //      | \     |
+#      //       |  \    |
+#     //        |   \   |
+#    //         |    \  |
+#   //          |    |\ |
+#  //           |    | \|
+# //            \    \
+#c'             |\    \
+#               | \    \
+#               |  \    \
+#               |.' \    \
+#              _\    \.-' \ MJP
+#             (___.-(__.'\/
 
 protractor = r'''                             90                             
                        XXXXXXXXXXXXXXX                      
@@ -113,7 +113,7 @@ protractor = r'''                             90
   X         XXXXXX       X    X   X      XXXXX            X 
  X                XXXXX   X   X XX   XXXX                  X
  X                     XXXXXX XX XXXX                      X
-0X                           XXXXX                         X 180
+0X                           XXXXX                     180 X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'''
 
 gold = r'''⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -180,6 +180,6 @@ X     XXX    XXXXX    X
  X                   X 
   X                 X  
    X               X   
-    X             X    
-     XXX       XXX     
-        XXXXXXX'''
+    X             X'''
+#     XXX       XXX     
+#        XXXXXXX

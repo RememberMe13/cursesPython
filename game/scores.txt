@@ -3,4 +3,5 @@ joe:38
 reginald:44
 Henry:90
 Gold muncher:365
-Awd:105
+Ad:428
+Aw:137

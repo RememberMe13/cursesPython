@@ -56,7 +56,8 @@ def main(stdscr):
 
     if not game(player, msg, side, art, enemyAttrs, stdscr):
         showDeath(stdscr)
-
+    else:
+        showWin(stdscr)
     showScores(stdscr)
 
 

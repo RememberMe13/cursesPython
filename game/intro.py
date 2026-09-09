@@ -107,6 +107,13 @@ def showDeath(window):
     
     window.getch()
 
+def showWin(window):
+    window.erase()
+    window.addstr(0, 0, "You win")
+    window.refresh()
+
+    window.getch()
+
 
 if __name__ == "__main__":
     print("This file is not meant to be run by itself. Exiting.")

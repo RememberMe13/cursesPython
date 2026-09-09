@@ -9,7 +9,7 @@ def setupWindows(window):
     msg = curses.newwin(5, (curses.COLS - 4), (curses.LINES - 6), 2)
     side = curses.newwin((curses.LINES - 9), 23, 1, (curses.COLS - 25))
     art = curses.newwin((curses.LINES - 9), (curses.COLS - 30), 1, 2)
-    enemyAttrs = curses.newwin(1, (curses.COLS - 30), (curses.LINES - 11), 2)
+    enemyAttrs = curses.newwin(1, (curses.COLS - 30), (curses.LINES - 9), 2)
 
     # format: tl y/x,  br y/x
     # messages
