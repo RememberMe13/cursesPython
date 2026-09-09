@@ -387,6 +387,12 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         wdwPrint(msg, "Bad ending")
     else:
         wdwPrint(msg, "neutral ending")
+    
+    # if no file make file
+    try:
+        open("scores.txt", "r").close()
+    except FileNotFoundError:
+        open("scores.txt", "w").close()
 
     with open("scores.txt", "a") as f:
         n = player.name

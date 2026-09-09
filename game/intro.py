@@ -93,6 +93,12 @@ def showScores(window):
     window.addstr(0, 0, "scores\nPress any key to continue.")
     unsort = []
 
+    # If file no exist, make file
+    try:
+        open("scores.txt", "r").close()
+    except FileNotFoundError:
+        open("scores.txt", "w").close()
+
     with open("scores.txt", "r") as f:
         for line in f:
             name, score, h = line.strip("\n").split(":")
@@ -116,18 +122,30 @@ def showScores(window):
 
     window.getch()
 
-def showDeath(window):
+def showDeath(window, score):
+    maxY, maxX = window.getmaxyx()
+    x = int(maxX / 2)
+    y = int(maxY / 2)
+
     window.erase()
-    window.addstr(0, 0, "You have died")
+    window.addstr(y - 6, x - 7, "You have died.", curses.A_BOLD)
+    window.addstr(y - 4, x - 5, f"Score: {score}")
+    window.addstr(maxY - 2, x - 13, "Press anything to continue")
     window.refresh()
     
     window.getch()
 
-def showWin(window):
-    window.erase()
-    window.addstr(0, 0, "You win")
-    window.refresh()
+def showWin(window, score):
+    maxY, maxX = window.getmaxyx()
+    x = int(maxX / 2)
+    y = int(maxY / 2)
 
+    window.erase()
+    window.addstr(y - 6, x - 7, "You have won!", curses.A_BOLD | curses.A_BLINK)
+    window.addstr(y - 4, x - 5, f"Score: {score}")
+    window.addstr(maxY - 2, x - 13, "Press anything to continue")
+    window.refresh()
+    
     window.getch()
 
 

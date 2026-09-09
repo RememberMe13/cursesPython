@@ -42,7 +42,8 @@ def main(stdscr):
             stdscr.erase()
             break
         elif choice == "scores":
-            showScores(stdscr)
+            #showScores(stdscr)
+            showWin(stdscr, 123)
         elif choice == "quit":
             return
 
