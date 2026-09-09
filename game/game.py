@@ -1,11 +1,11 @@
 import curses
-import random
 import hashlib
+import random
 from curses.textpad import Textbox
 from time import sleep
 
-import artAscii
-from enemy import *
+from game.enemy import *
+from game import artAscii
 
 
 def wdwPrint(window, msg, refresh="yes", y=0, x=0):
@@ -48,7 +48,7 @@ def getInput(nLines, nCols, startY, startX):
     return text
 
 def fight(enemy, player, msg, side, art, enemyAttrs):
-    aY, aX = art.getmaxyx()
+    aY, _ = art.getmaxyx()
     asciHeight = getattr(artAscii, enemy.artName).count("\n") + 1
     # Print art
     wdwPrint(art, getattr(artAscii, enemy.artName), "yes", int((aY / 2) - int(asciHeight / 2)), 0)

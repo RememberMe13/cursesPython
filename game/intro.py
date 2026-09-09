@@ -8,7 +8,6 @@ def showIntro(window, version):
     choice = "start"
 
     #window.clear()
-    midY = int(curses.LINES / 2)
     midX = int(curses.COLS / 2)
    
     title = r"""   _________    __  _________   _   _____    __  _________    __  ____________  ______

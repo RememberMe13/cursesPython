@@ -1,11 +1,11 @@
 #!/usr/bin/python
 import curses
 
-from game import game
-from intro import *
-from name import getName
-from player import Player
-from windows import setupWindows
+from game.game import game
+from game.intro import *
+from game.name import getName
+from game.player import Player
+from game.windows import setupWindows
 
 
 def main(stdscr):
