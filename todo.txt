@@ -2,4 +2,6 @@
 - add a try catch for if there is no scores.txt file
 - add endings
 - add a required things section (pip install windows-curses)
+- change colors
+
 Questions:
