@@ -9,8 +9,8 @@
 2. To test:
 ```python
 python
->>> import curses
-``` (no error)
+>>> import curses # No error
+```
 
 
 #### Windows
