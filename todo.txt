@@ -1,6 +1,5 @@
 - finish ui for death, win, and scores screens
 - add endings
-- add a required things section (pip install windows-curses)
 - change colors
 
 Questions:
