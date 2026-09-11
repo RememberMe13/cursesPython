@@ -7,13 +7,14 @@ from time import sleep
 from game.enemy import *
 from game import artAscii
 
-
+# Makes it easier to show text
 def wdwPrint(window, msg, refresh="yes", y=0, x=0):
     if refresh == "yes":
         window.erase()
     window.addstr(y, x, msg)
     window.refresh()
 
+# shows in the bottom right corner
 def keyToCont(window):
     sleep(0.5)
     y, x = window.getmaxyx()
@@ -31,6 +32,7 @@ def calcAttrs(player, window):
     window.addstr(y - 14, x - 23, artAscii.face)
     window.refresh()
 
+# updates the enemys health
 def calcEnemy(enemy, window):
     #y, x = window.getmaxyx()
     window.erase()
@@ -38,6 +40,7 @@ def calcEnemy(enemy, window):
     window.addstr(0, 12, "Health bar [||||||||]")
     window.refresh()
 
+# makes it easier to get input
 def getInput(nLines, nCols, startY, startX):
     win1 = curses.newwin(nLines, nCols, startY, startX)
     win1.bkgd(' ', curses.color_pair(3))
@@ -47,21 +50,45 @@ def getInput(nLines, nCols, startY, startX):
     text = box.gather().strip().lower()
     return text
 
+# self-explanatory
 def fight(enemy, player, msg, side, art, enemyAttrs):
-    aY, _ = art.getmaxyx()
-    asciHeight = getattr(artAscii, enemy.artName).count("\n") + 1
-    # Print art
-    wdwPrint(art, getattr(artAscii, enemy.artName), "yes", int((aY / 2) - int(asciHeight / 2)), 0)
+    aY, aX = art.getmaxyx()
+
+    # define picture
+    pic = getattr(artAscii, enemy.artName)
+    artLines = pic.splitlines()
+
+    # height and width of artwork
+    asciHeight = len(artLines)
+    asciWidth = max((len(line) for line in artLines), default = 0)
+
+    # To center the artwork
+    startY = max(0, (aY - asciHeight) // 2)
+    startX = max(0, (aX - asciWidth) // 2)
+
+    art.erase()
+
+    # Instead of printing the artwork in one go (would wrap around to the start of the window)
+    # prints the lines one-by-one so i can controll the x coords
+    for offset, line in enumerate(artLines):
+        y = startY + offset
+        x = startX
+        art.addstr(y, x, line)
+
+    art.refresh()
+
+    # Show stats
     calcEnemy(enemy, enemyAttrs)
 
     wdwPrint(msg, f"You are fighting {enemy.name}")
     sleep(1)
     
-    golds = [] # will get 10 - the distance and add it here, and add the sum at the end
+    golds = [] # will get 10 minus the distance from correct answer and add it here, and add the sum at the end
 
     # Actual fight loop
     while True:
         wdwPrint(msg, random.choice(enemy.quotes))
+
         rNum = random.randint(1, 10)
         pNum = ""
         eNum = random.randint(1, 10)
@@ -105,17 +132,20 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
             calcAttrs(player, side)
             keyToCont(msg)
 
-
+        # check if player or enemy is dead
         if player.getHP() <= 0:
             wdwPrint(msg, "YOU HAVE DIED!!!")
             keyToCont(msg)
             break
         elif enemy.getHP() <= 0:
             wdwPrint(msg, "Zabito Boga! (enemy felled)")
+            sleep(1)
             break
-
+    
+    # dont add gold if dead
     if player.getHP() <= 0:
         return False
+
     player.gainGold(sum(golds))
     wdwPrint(msg, f"Added {sum(golds)} gold!")
     calcAttrs(player, side)
@@ -129,7 +159,7 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
 
 def game(player, msg, side, art, enemyAttrs, stdscr):
     #Default sleep time
-    ds = 1
+    ds = 1.5
 
     #choices are here for easier looking back at
     choice1 = "" # tech / math
@@ -137,6 +167,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
     choice3 = 0  # 1-4
     choice4 = "" # science / english
     choice5 = "" # yes / no
+    choice6 = 0 # 1-3 only for neutral ending
 
     #Enemys name, name of art, name of quotes, hp
     ant = Enemy("Big Ant", "ant", antQuotes, 20)
@@ -155,6 +186,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
     side.bkgd(' ', curses.color_pair(1))
     enemyAttrs.bkgd(' ', curses.color_pair(2))
     art.refresh()
+
     #set up side panel
     calcAttrs(player, side)
 
@@ -173,10 +205,12 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
 
 
     # -----------START FIRST FIGHT------------
-
+    
+    # if dead returns to the main.py file to show the death screen
     if not fight(ant, player, msg, side, art, enemyAttrs):
         return False
     
+    # get choice1
     while True:
         wdwPrint(msg, "Where do you want to head to next? tech or math")
         wdwPrint(msg, "-> ", "no", 1)
@@ -197,6 +231,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             sleep(ds)
             wdwPrint(msg, "Do you take the ram? yes/no", "no", 2)
             wdwPrint(msg, "->", "no", 3)
+
             choice2 = getInput(1, 4, curses.LINES - 3, 5)
             if choice2 == "yes" or choice2 == "no":
                 break
@@ -205,17 +240,25 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
                 sleep(ds)
 
         if choice2 == "yes":
-            #TODO add money from ram
+            player.gainGold(600)
+            calcAttrs(player, side)
             wdwPrint(msg, "As you put the valuable sand into your pocket Gabe Newell jumps up and scares you!")
             keyToCont(msg)
+
             if not fight(gabe, player, msg, side, art, enemyAttrs):
                 return False
-            #Maybe gabe steals some of the money back after
+            
+            wdwPrint(msg, "As you leave the scene of the fight, Gabe runs past and nicks one of the sticks!")
+            player.spendGold(300)
+            calcAttrs(player, side)
+            keyToCont(msg)
+
         elif choice2 == "no":
             wdwPrint(msg, "As you walk away from the expensive sand you accidentally touch a live wire!")
             player.hurt(5)
             calcAttrs(player, side)
             keyToCont(msg)
+
             if not fight(wire, player, msg, side, art, enemyAttrs):
                 return False
 
@@ -233,20 +276,24 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
                 sleep(ds)
 
         if choice2 == "yes":
-            #TODO add money from calc
+            player.gainGold(270)
+            calcAttrs(player, side)
             wdwPrint(msg, "As you put the overpriced computer in your pocket an angry Math teacher approaches!")
             keyToCont(msg)
+
             if not fight(math, player, msg, side, art, enemyAttrs):
                 return False
+
         elif choice2 == "no":
             wdwPrint(msg, "As you walk away from the calc (short for calculator) you step on an upturned protractor!")
             player.hurt(5)
             calcAttrs(player, side)
             keyToCont(msg)
+
             if not fight(protractor, player, msg, side, art, enemyAttrs):
                 return False
 
-
+    # Food loop
     while True:
         wdwPrint(msg, "After all that effort you feel hungry.")
         sleep(ds)
@@ -259,6 +306,8 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
 
         wdwPrint(msg, "choice:", "no", 3, 55)
         choice3 = getInput(1, 2, curses.LINES - 3, 65)
+
+        # Input validation
         try:
             if choice3 == "":
                 wdwPrint(msg, "Please enter a number!")
@@ -327,6 +376,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             wdwPrint(msg, "Drink it? yes/no", "no", 2)
             wdwPrint(msg, "->", "no", 3)
             choice5 = getInput(1, 4, curses.LINES - 3, 5)
+
             if choice5 == "yes" or choice5 == "no":
                 break
             else:
@@ -340,6 +390,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             sleep(ds)
             wdwPrint(msg, "When you exit the portal, a giant gold slime thing attacks!", "no", 2)
             keyToCont(msg)
+
             if not fight(gold, player, msg, side, art, enemyAttrs):
                 return False
 
@@ -348,6 +399,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             sleep(ds)
             wdwPrint(msg, "This angers the puddle and it attacks!", "no", 1)
             keyToCont(msg)
+
             if not fight(puddle, player, msg, side, art, enemyAttrs):
                 return False
 
@@ -359,6 +411,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             sleep(ds)
             wdwPrint(msg, "Read it? yes/no", "no", 2)
             wdwPrint(msg, "->", "no", 3)
+
             choice5 = getInput(1, 4, curses.LINES - 3, 5)
             if choice5 == "yes" or choice5 == "no":
                 wdwPrint(msg, f"you chose {choice5}")
@@ -370,6 +423,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         if choice5 == "yes":
             wdwPrint(msg, "The book comes alive! It shouts \"stcscr.clear()\" at you!")
             keyToCont(msg)
+
             if not fight(book, player, msg, side, art, enemyAttrs):
                 return False
         elif choice5 == "no":
@@ -377,32 +431,108 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             sleep(ds)
             wdwPrint(msg, "WHY DID YOU NOT ENRICH YOUR MIND!?", "no", 1)
             keyToCont(msg)
+
             if not fight(english, player, msg, side, art, enemyAttrs):
                 return False
 
+    # ----------ENDING----------------
+    if choice1 == "tech" and choice4 == "english": # "good" ending
+        wdwPrint(msg, "The clocktower rings thrice, signalling the end of school hours.")
+        sleep(ds)
+        wdwPrint(msg, "The walk home is arduous and the sun blinds you", "no", 1)
+        sleep(ds)
+        wdwPrint(msg, "As you cross through the reserve, you spot an owl in the crook of a gumtree")
+        sleep(ds)
+        wdwPrint(msg, "This is the first time in years that you have seen an owl.")
+        keyToCont(msg)
 
-    if choice1 == "tech" and choice4 == "science":
-        wdwPrint(msg, "good ending")
-    elif choice1 == "math" and choice4 == "english":
-        wdwPrint(msg, "Bad ending")
+        wdwPrint(msg, "As you pass it, the bird hoots, and flies away")
+        sleep(ds)
+        wdwPrint(msg, "It was a good day", "no", 1)
+        keyToCont(msg)
+
+    elif choice1 == "math" and choice4 == "science": # "bad" ending
+        wdwPrint(msg, "You look at your watch and realise it is time to head home")
+        sleep(ds)
+        wdwPrint(msg, "As you approach the intersection, the sun blinds you for a moment.", "no", 1)
+        sleep(ds)
+        wdwPrint(msg, "The green man starts walking, and you cross the road", "no", 2)
+        keyToCont(msg)
+
+        wdwPrint(msg, "Halfway across, you hear the screeching of brakes as a truck fails to stop before the lights.")
+        sleep(ds)
+        wdwPrint(msg, "Distracted by the commotion, an unaware driver turns the corner where you have right of way is about to run you over!", "no", 1)
+
+        # fight the truck, it has a lot of health
+
     else:
-        wdwPrint(msg, "neutral ending")
+        while True: # "neutral" ending
+            wdwPrint(msg, "After the last fight of the day, you decide to get a drink from the asian mart")
+            sleep(ds)
+            wdwPrint(msg, "What would you like?", "no", 1)
+            wdwPrint(msg, "1. Soy bean drink", "no", 2)
+            wdwPrint(msg, "2. Guyabano nectar", "no", 1)
+            wdwPrint(msg, "3. Sour plum tea", "no", 3)
+            wdwPrint(msg, "->", "no", 4)
+            choice6 = getInput(1, 2, curses.LINES - 2, 5)
+            
+            if choice6 == "":
+                wdwPrint(msg, "Please enter a number!")
+                sleep(ds)
+                continue
+            try:
+                choice6 = int(choice6)
+            except ValueError:
+                wdwPrint(msg, "Please enter a number!")
+                sleep(ds)
+                continue
+            
+            if choice6 in [1, 2, 3]:
+                break
+            else:
+                wdwPrint(msg, "Please enter a number from 1 to 3!")
+        
+        match choice6:
+            case 1:
+                wdwPrint(msg, "It tastes nice.")
+                sleep(ds)
+                wdwPrint(msg, "+5 hp", "no", 1)
+                player.heal(5)
+                keyToCont(msg)
+            case 2:
+                wdwPrint(msg, "Very sweet.")
+                sleep(ds)
+                wdwPrint(msg, "+10 hp", "no", 1)
+                keyToCont(msg)
+            case 3:
+                wdwPrint(msg, "The shopkeeper says they are all out of plum tea.")
+                sleep(ds)
+                wdwPrint(msg, "\"I think the store down the road has some in stock\"", "no", 1)
+                sleep(ds)
+                wdwPrint(msg, "You say \"Do you know who you are talking to?\" and chinned the bloke right then and there", "no", 2)
+                keyToCont(msg)
+
+                shop = Enemy("Angry Shopkeeper", "math", shopQuotes, 30)
+                if not fight(shop, player, msg, side, art, enemyAttrs):
+                    return False
+
+
     
     # if no file make file
     try:
         open("scores.txt", "r").close()
     except FileNotFoundError:
         open("scores.txt", "w").close()
-
+    
     with open("scores.txt", "a") as f:
         n = player.name
-        s = str(player.getGold() + player.getHP())
+        player.score = str(player.getGold() + player.getHP())
+
         # create hash
-        h = hashlib.sha512(n.encode("utf-8") + s.encode("utf-8")).hexdigest()[:10]
-        f.write(f"{n}:{s}:{h}\n")
-
-    stdscr.getch()
-
+        h = hashlib.sha512(n.encode("utf-8") + player.score.encode("utf-8")).hexdigest()[:10]
+        f.write(f"{n}:{player.score}:{h}\n")
+    
+    # True means not dead
     return True
 
 if __name__ == "__main__":

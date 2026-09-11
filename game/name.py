@@ -2,7 +2,7 @@ import curses
 import time
 from curses.textpad import Textbox, rectangle
 
-
+# Gets the name from input
 def getName(window):
     midY = int(curses.LINES / 2)
     midX = int(curses.COLS / 2)
@@ -16,13 +16,15 @@ def getName(window):
     # Draw a rectangle (border)
     rectangle(window, (midY - 1), (midX - 8), (midY + 1), (midX + 8))
     window.refresh()
-
+    
+    # makes the box editable
     box.edit()
     text = box.gather().replace("\n", "").strip().capitalize()
-
+    
     curses.curs_set(False)
     window.erase()
     
+    # just for display
     window.addstr(midY, int(midX - len(text) / 2), text, curses.A_BLINK | curses.A_BOLD)
     window.refresh()
     time.sleep(2) 

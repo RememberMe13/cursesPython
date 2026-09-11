@@ -1,10 +1,9 @@
 import curses
 from curses.textpad import rectangle
 
-
+# Sets up the 3 main windows: art, sidebar, and messages
 def setupWindows(window):
-    
-    
+
     # nlines, ncols, startY, startX
     msg = curses.newwin(5, (curses.COLS - 4), (curses.LINES - 6), 2)
     side = curses.newwin((curses.LINES - 9), 23, 1, (curses.COLS - 25))

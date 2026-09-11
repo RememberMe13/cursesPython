@@ -18,7 +18,8 @@ $ python
 2. Test like above.
 
 ## Usage:
-1. cd into the cursesPython directory
+1. Clone or download the repo: `git clone https://github.com/RememberMe13/cursesPython` or click the green <>Code button then download as ZIP, then extract.
+1. Cd into the cursesPython directory
 2. Run main.py: `./main.py` or `python main.py`
 3. Play game...
 

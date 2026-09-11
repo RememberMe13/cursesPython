@@ -3,6 +3,9 @@ class Player:
         self.name = name
         self.__hp = 100
         self.__gold = 0
+        self.score = 0
+
+    # I dont need any input validation because all my player inputs are just strings
 
     def getHP(self):
         return self.__hp
