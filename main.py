@@ -29,14 +29,18 @@ def main(stdscr):
     curses.curs_set(True)
     
     # Set up colours
-    curses.init_color(curses.COLOR_BLACK, 0, 0, 0)
-    curses.init_color(curses.COLOR_WHITE, 1000, 1000, 1000)
+    if curses.can_change_color():
+        curses.init_color(curses.COLOR_BLACK, 0, 0, 0)
+        curses.init_color(curses.COLOR_WHITE, 1000, 1000, 1000)
+        curses.init_color(curses.COLOR_GREEN, 270, 400, 266)
+        curses.init_color(curses.COLOR_CYAN, 317, 317, 317) # Used in place of grey
 
     # Make color pairs (just colors)
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
-    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLUE)
-    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
-    curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_BLACK)
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_CYAN) #Sidebar
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_GREEN) #Art
+    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK) # messages
+    curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_WHITE)
+    curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_BLACK) # for blanking the start menu boxes
     
     # chooses start, scores or exit
     while True:

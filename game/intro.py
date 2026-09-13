@@ -66,16 +66,16 @@ def showIntro(window, version):
     # menu loop
     while True:
         for i in blocks:
-            i.bkgd(' ', curses.color_pair(4))
+            i.bkgd(' ', curses.color_pair(5))
             i.refresh()
         if choice == "start":
-            st.bkgd(' ', curses.color_pair(3))
+            st.bkgd(' ', curses.color_pair(4))
             st.refresh()
         elif choice == "scores":
-            sc.bkgd(' ', curses.color_pair(3))
+            sc.bkgd(' ', curses.color_pair(4))
             sc.refresh()
         elif choice == "quit":
-            qu.bkgd(' ', curses.color_pair(3))
+            qu.bkgd(' ', curses.color_pair(4))
             qu.refresh()
         
         # if key is enter stop, else change
@@ -134,7 +134,12 @@ def showScores(window, player = ""):
         # sorts it by the score at the end.
         sort = sorted(unsort, key=lambda x: int(x.split(":")[-1]), reverse=True)
         for item in sort:
-            window.addstr(line, int(maxX / 3) + 1, str(num) + " " + ("-" * (int(maxX / 3) - 4 - len(item))))
+            if num >= 10:
+                dashes = (int(maxX / 3) - 5 - len(item))
+            else:
+                dashes = (int(maxX / 3) - 4 - len(item))
+
+            window.addstr(line, int(maxX / 3) + 1, str(num) + " " + ("-" * dashes))
 
             if item.split(":")[0] == player:
                 window.addstr(line, (int(maxX / 3) * 2) - len(item), item, curses.A_BLINK)

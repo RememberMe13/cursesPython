@@ -25,6 +25,8 @@ puddleQuotes = ("\"Are you in a muddle?\"", "\"My brother is a pool\"", "\"Prepa
 bookQuotes = ("\"Book uses papercut!\"", "\"Did you know: the n in Ncurses stands for new\"", "\"#!&!@?*&# (curse word)\"")
 englishQuotes = ("\"Give me a 1000 word essay on the origins of a K.O!\"", "\"Where is my cardigan?\"", "\"You forgot your annotated bibliography!\"")
 shopQuotes = ("\"No sour plum tea for you!\"", "\"You'll pay for what you take!\"", "\"My shop is doing quite well thank you\"")
+carQuotes = ("\"SPOILER ALERT!\"", "\"I just changed these tires\"", "\"When was the last time YOU had your oil changed?\"")
+
 
 if __name__ == "__main__":
     print("This file is not meant to be run by itself. Exiting.")

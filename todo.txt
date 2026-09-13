@@ -1,5 +1,3 @@
-- change colors
-- add art for shopkeeper
 
 Questions:
 - Can i change the perspective from "i walk into the school" to "you walk into the school"?

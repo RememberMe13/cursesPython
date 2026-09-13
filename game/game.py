@@ -34,10 +34,7 @@ def calcAttrs(player, window):
 
 # updates the enemys health
 def calcEnemy(enemy, window):
-    #y, x = window.getmaxyx()
-    window.erase()
     window.addstr(0, 0, "HP: " + str(enemy.getHP()))
-    window.addstr(0, 12, "Health bar [||||||||]")
     window.refresh()
 
 # makes it easier to get input
@@ -73,6 +70,9 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
     for offset, line in enumerate(artLines):
         y = startY + offset
         x = startX
+
+        if y >= aY: # To prevent drawing past the end of the screen
+            break
         art.addstr(y, x, line)
 
     art.refresh()
@@ -119,7 +119,7 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
         # Finds out if the enemy or player was closer to the random number
         if pDist < eDist:
             wdwPrint(msg, f"You were closer: {pDist} away vs {eDist} away")
-            enemy.hurt(eDist * 10)
+            enemy.hurt(eDist)
             calcEnemy(enemy, enemyAttrs)
             golds.append(10 - pDist)
             keyToCont(msg)
@@ -159,7 +159,7 @@ def fight(enemy, player, msg, side, art, enemyAttrs):
 
 def game(player, msg, side, art, enemyAttrs, stdscr):
     #Default sleep time
-    ds = 1.5
+    ds = 1
 
     #choices are here for easier looking back at
     choice1 = "" # tech / math
@@ -246,6 +246,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             keyToCont(msg)
 
             if not fight(gabe, player, msg, side, art, enemyAttrs):
+                player.spendGold(600)
                 return False
             
             wdwPrint(msg, "As you leave the scene of the fight, Gabe runs past and nicks one of the sticks!")
@@ -282,6 +283,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
             keyToCont(msg)
 
             if not fight(math, player, msg, side, art, enemyAttrs):
+                player.spendGold(270)
                 return False
 
         elif choice2 == "no":
@@ -462,8 +464,12 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
         wdwPrint(msg, "Halfway across, you hear the screeching of brakes as a truck fails to stop before the lights.")
         sleep(ds)
         wdwPrint(msg, "Distracted by the commotion, an unaware driver turns the corner where you have right of way is about to run you over!", "no", 1)
-
-        # fight the truck, it has a lot of health
+        keyToCont(msg)
+       
+        health = player.getHP() * 2
+        car = Enemy("Revving Car", "car", carQuotes, min(health, 100)) # Strong boss
+        if not fight(car, player, msg, side, art, enemyAttrs):
+            return False
 
     else:
         while True: # "neutral" ending
@@ -512,7 +518,7 @@ def game(player, msg, side, art, enemyAttrs, stdscr):
                 wdwPrint(msg, "You say \"Do you know who you are talking to?\" and chinned the bloke right then and there", "no", 2)
                 keyToCont(msg)
 
-                shop = Enemy("Angry Shopkeeper", "math", shopQuotes, 30)
+                shop = Enemy("Angry Shopkeeper", "shop", shopQuotes, 30)
                 if not fight(shop, player, msg, side, art, enemyAttrs):
                     return False
 
