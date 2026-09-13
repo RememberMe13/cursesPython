@@ -14,7 +14,7 @@ $ python
 
 
 #### Windows
-1. Install windows-curses using pip `pip install windows-curses`
+1. Install windows-curses using pip: `pip install windows-curses`
 2. Test like above.
 
 ## Usage:
