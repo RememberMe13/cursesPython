@@ -1,3 +1,5 @@
+- end spacing is incorrect (extra space dissapears when highlighted)
+- change default colors, green is not good
 
 Questions:
 - Can i change the perspective from "i walk into the school" to "you walk into the school"?
