@@ -1,3 +1,4 @@
+# this repo has moved to codeberg https://codeberg.org/RememberMe/cursesPython
 # Text based game in python
 
 **Made with curses (Ncurses)**
